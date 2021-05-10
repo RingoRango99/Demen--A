@@ -9,7 +9,7 @@ public class InventorySystem : MonoBehaviour
     public GameObject invItem;
 
 
-    public float maxReach = 5f;
+    public float maxReach = 2f;
 
 
 
@@ -27,6 +27,11 @@ public class InventorySystem : MonoBehaviour
 
             PickupItem();
 
+        }
+
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            DropItem();
         }
     }
 
