@@ -7,9 +7,25 @@ public class PlayerMove : MonoBehaviour
     public CharacterController ctrl;
 
     public float moveSpeed = 12f;
+    public float gravity = -9.8f;
+
+    public Transform groundCheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
+
+    Vector3 velocity;
+    bool isGrounded;
 
     void Update()
     {
+        // check if player is touching a ground by creating a check sphere underneath
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        // if player is grounded and velocity is less than 0
+        if (isGrounded && velocity.y < 0)
+        {
+            // reset velocity to -2
+            velocity.y = -2f;
+        }
 
         // store horizontal and vertical axis into respective variables
         float x = Input.GetAxis("Horizontal");
@@ -18,5 +34,10 @@ public class PlayerMove : MonoBehaviour
         Vector3 direction = transform.right * x + transform.forward * z;
         // tell character controller to move 
         ctrl.Move(direction * moveSpeed * Time.deltaTime);
+
+        // calculate gravity velocity
+        velocity.y += gravity * Time.deltaTime;
+        // make player fall depending on gravity velocity
+        ctrl.Move(velocity * Time.deltaTime);
     }
 }
