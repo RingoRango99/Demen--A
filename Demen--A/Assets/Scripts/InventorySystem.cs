@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class InventorySystem : MonoBehaviour
 {
+    // Variables
+    public Transform targetC;
     public GameObject itemDestination;
     public GameObject dropLocation;
     public GameObject pickupItem;
     public GameObject invItem;
-
 
     public float maxReach = 2f;
 
@@ -17,53 +18,57 @@ public class InventorySystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // pre set world game objects necessary for locations of items
         itemDestination = GameObject.Find("ItemHolder");
         dropLocation = GameObject.Find("DropLocation");
+        targetC = GameObject.Find("Main Camera").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        // run the looking raycast
+        LookCast();
+
         if (Input.GetKeyDown(KeyCode.Mouse0) && invItem == null && pickupItem.tag == "Item")
         {
-
+            // if lmb is pressed and player is holding nothing and the looked at item has a tag of "Item"
+            // run pick up script
             PickupItem();
 
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
+            // if rmb is pressed drop any item held
             DropItem();
         }
     }
 
 
-    void FixedUpdate()
-    {
-        LookCast();
-    }
-
 
 
     void LookCast()
     {
-
+        // declare raycast variable to store hit information
         RaycastHit hit;
 
+        // for debug purposes declare forward direction by max reach distance
         Vector3 fwd = transform.TransformDirection(Vector3.forward) * maxReach;
+        // draw a visible ray to see how far the reach is for the raycast
         Debug.DrawRay(transform.position, fwd, Color.blue);
 
+        // if from the origin point which is camera and transform forward there is a hit within reach
         if (Physics.Raycast(transform.position, transform.forward, out hit, maxReach))
         {
-
+            // put the raycast hit item into variable
             pickupItem = hit.transform.gameObject;
-
-            Debug.Log("Looking At - ", pickupItem);
 
         }
         else
         {
-
+            // if nothing is hit run reset item script
             ResetItem();
 
         }
@@ -72,28 +77,39 @@ public class InventorySystem : MonoBehaviour
 
     void PickupItem()
     {
-
+        // store looked at item into inventory item 
         invItem = pickupItem;
 
+        // change the objects kinematics to stop it from moving whilst being held
+        // set the position and parent of the object to the item destination object so it appears in bottom right
+        // set object angle to face the player to make item identification easier
         invItem.GetComponent<Rigidbody>().isKinematic = true;
         invItem.transform.position = itemDestination.transform.position;
         invItem.transform.parent = itemDestination.transform;
+        invItem.transform.LookAt(targetC);
+
+        
 
     }
 
     void DropItem()
     {
-
+        //set object drop location to where the object will be dropped
         invItem.transform.position = dropLocation.transform.position;
+        //un-parent the object from the hold location
         invItem.transform.parent = null;
+        //allow the object to have physichs
         invItem.GetComponent<Rigidbody>().isKinematic = false;
+        // make the object face the player when dropped
+        invItem.transform.LookAt(targetC);
+        // set held item variable to nothing
         invItem = null;
 
     }
 
     void ResetItem()
     {
-
+        // set looking at item to nothing
         pickupItem = null;
 
     }
