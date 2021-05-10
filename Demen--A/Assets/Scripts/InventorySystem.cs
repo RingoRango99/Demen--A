@@ -5,6 +5,7 @@ using UnityEngine;
 public class InventorySystem : MonoBehaviour
 {
     public GameObject itemDestination;
+    public GameObject dropLocation;
     public GameObject pickupItem;
     public GameObject invItem;
 
@@ -17,6 +18,7 @@ public class InventorySystem : MonoBehaviour
     void Start()
     {
         itemDestination = GameObject.Find("ItemHolder");
+        dropLocation = GameObject.Find("DropLocation");
     }
 
     // Update is called once per frame
@@ -82,6 +84,7 @@ public class InventorySystem : MonoBehaviour
     void DropItem()
     {
 
+        invItem.transform.position = dropLocation.transform.position;
         invItem.transform.parent = null;
         invItem.GetComponent<Rigidbody>().isKinematic = false;
         invItem = null;
