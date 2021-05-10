@@ -1769,6 +1769,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectedItems: []
+  testRecipe:
+  - {fileID: 5564097416502910778, guid: f68c678c3fcda394f8839f25851cd6ec, type: 3}
+  - {fileID: 6077649052114207238, guid: 4c6466160a564d64a8eb55d351e9fb5c, type: 3}
+  items: []
 --- !u!1 &1777306876
 GameObject:
   m_ObjectHideFlags: 0
