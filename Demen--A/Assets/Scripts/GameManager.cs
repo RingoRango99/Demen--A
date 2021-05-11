@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public RecipeUI recipeUI;
 
     public List<GameObject> collectedItems = new List<GameObject>();
     public List<GameObject> recipeList = new List<GameObject>();
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        recipeUI = GameObject.Find("RecipeBoard").GetComponent<RecipeUI>();
     }
 
     // Update is called once per frame

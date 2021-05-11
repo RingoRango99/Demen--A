@@ -35,7 +35,11 @@ public class InventorySystem : MonoBehaviour
         {
             // if lmb is pressed and player is holding nothing and the looked at item has a tag of "Item"
             // run pick up script
-            PickupItem();
+            if (pickupItem != null)
+            {
+                PickupItem();
+            }
+            
 
         }
 
