@@ -13,9 +13,14 @@ public class ItemSpawn : MonoBehaviour
 
     public GameObject spawnItem;
 
+    public GameManager gamemanager;
+
     // Start is called before the first frame update
     void Start()
-    { 
+    {
+
+        gamemanager = GameObject.Find("GameController").GetComponent<GameManager>();
+
         // searches through game world to find any objects with tag spawn point and stores them in array
         spawnLoc = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
@@ -51,7 +56,10 @@ public class ItemSpawn : MonoBehaviour
         GameObject spawnedItem = (GameObject)Instantiate(sItem);
 
         spawnedItem.name = sItem.name;
-        
+
+        // put chosen item into recipe list
+        gamemanager.Updatelist(spawnedItem);
+
 
 
     }

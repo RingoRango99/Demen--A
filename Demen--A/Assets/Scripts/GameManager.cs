@@ -6,10 +6,9 @@ public class GameManager : MonoBehaviour
 {
 
     public List<GameObject> collectedItems = new List<GameObject>();
+    public List<GameObject> recipeList = new List<GameObject>();
 
-    public GameObject[] testRecipe;
-
-
+    public GameObject[] recipe;
     public GameObject[] items;
 
     // Start is called before the first frame update
@@ -21,27 +20,27 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (compare(testRecipe, items) == true)
+        if (compare(recipe, items) == true)
         {
             Debug.Log("GameOver");
         }
 
     }
 
-    public bool compare (GameObject[] recipe, GameObject[] item)
+    public bool compare (GameObject[] rec, GameObject[] item)
     {
         // if recipe length isnt the same as item length then return false
-        if (recipe.Length != item.Length)
+        if (rec.Length != item.Length)
         {
             return false;
         }
 
 
         // for every slot of recipe length
-        for (int i = 0; i < recipe.Length; i++)
+        for (int i = 0; i < rec.Length; i++)
         {
             // it recipe slot isnt equal to item slot return false
-            if (!recipe[i].name.Equals(item[i].name))
+            if (!rec[i].name.Equals(item[i].name))
             {
 
                 return false;
@@ -68,5 +67,13 @@ public class GameManager : MonoBehaviour
 
         
 
+    }
+
+    public void Updatelist(GameObject recipeadd)
+    {
+        // add items to recipe as they are spawned
+        recipeList.Add(recipeadd);
+        // convert list to array
+        recipe = recipeList.ToArray();
     }
 }
