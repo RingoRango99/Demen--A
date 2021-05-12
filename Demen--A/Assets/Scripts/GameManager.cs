@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,10 +13,14 @@ public class GameManager : MonoBehaviour
     public GameObject[] recipe;
     public GameObject[] items;
 
+    public bool cursorstate;
+
     // Start is called before the first frame update
     void Start()
     {
-        recipeUI = GameObject.Find("RecipeBoard").GetComponent<RecipeUI>();
+        recipeUI = GameObject.Find("GameController").GetComponent<RecipeUI>();
+
+        cursorstate = false;
     }
 
     // Update is called once per frame
@@ -26,6 +31,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameOver");
         }
 
+        if (cursorstate == true)
+        {
+            UnlockCursor();
+        }
+        else
+        {
+            LockCursor();
+        }    
     }
 
     public bool compare (GameObject[] rec, GameObject[] item)
@@ -76,5 +89,33 @@ public class GameManager : MonoBehaviour
         recipeList.Add(recipeadd);
         // convert list to array
         recipe = recipeList.ToArray();
+    }
+
+    public void LockCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Debug.Log("cursor locked");
+
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Debug.Log("cursor Unlocked");
+
+    }
+
+    public void ResetCollection()
+    {
+
+        collectedItems.Clear();
+        for (int i = 0; i < items.Length; i++)
+        {
+            items[i] = null;
+        }
+        
+
     }
 }

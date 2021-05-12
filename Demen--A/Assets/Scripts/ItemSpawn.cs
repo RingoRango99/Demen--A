@@ -15,6 +15,13 @@ public class ItemSpawn : MonoBehaviour
 
     public GameManager gamemanager;
 
+    public List<GameObject> remainingSpawnLoc;
+    public List<GameObject> remainingItems;
+    public List<GameObject> remainingItems2;
+
+    public List<GameObject> respawnlocList;
+    public List<GameObject> respawnitemList;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,31 +32,61 @@ public class ItemSpawn : MonoBehaviour
         spawnLoc = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
         // makes new list containing all game objects within the arrays
-        List<GameObject> remainingSpawnLoc = new List<GameObject>(spawnLoc);
-        List<GameObject> remainingItems = new List<GameObject>(items);
+        remainingSpawnLoc = new List<GameObject>(spawnLoc);
+        remainingItems = new List<GameObject>(items);
+
+        ItemSpawnLoc(remainingSpawnLoc, remainingItems);
+       
+    }
+
+    public void ItemSpawnLoc(List<GameObject> spawnList, List<GameObject> itemList)
+    {
+        
+        // creates a loop that goes through the length of the spawn point array
+        for (int i = 0; i < spawnLoc.Length; i++)
+        {
+            // chooses random number for spawn location and item
+            spawn = Random.Range(0, spawnList.Count);
+            item = Random.Range(0, itemList.Count);
+
+            // selects the item to be spawned from currently chosen remainingitem list
+            spawnItem = itemList[item];
+            // sets item spawn to the position of the currently chosen remainingspawnloc list
+            spawnItem.transform.position = spawnList[spawn].transform.position;
+            // spawns chosen item
+            Spawnitem(spawnItem);
+            // removes item and spawn point from list to avoid duplicates
+            spawnList.RemoveAt(spawn);
+            itemList.RemoveAt(item);
+
+        }
+
+
+    }
+
+    public void ItemReSpawnLoc(List<GameObject> spawnList, List<GameObject> itemList)
+    {
 
         // creates a loop that goes through the length of the spawn point array
         for (int i = 0; i < spawnLoc.Length; i++)
         {
             // chooses random number for spawn location and item
-            spawn = Random.Range(0, remainingSpawnLoc.Count);
-            item = Random.Range(0, remainingItems.Count);
+            spawn = Random.Range(0, spawnList.Count);
+            item = Random.Range(0, itemList.Count);
 
             // selects the item to be spawned from currently chosen remainingitem list
-            spawnItem = remainingItems[item];
+            spawnItem = itemList[item];
             // sets item spawn to the position of the currently chosen remainingspawnloc list
-            spawnItem.transform.position = remainingSpawnLoc[spawn].transform.position;
-            // spawns chosen item
-            Spawnitem(spawnItem);
-            // removes item and spawn point from list to avoid duplicates
-            remainingSpawnLoc.RemoveAt(spawn);
-            remainingItems.RemoveAt(item);
-            
+            spawnItem.transform.position = spawnList[spawn].transform.position;
+
+            spawnList.RemoveAt(spawn);
+            itemList.RemoveAt(item);
         }
-       
+
+
     }
 
-    void Spawnitem(GameObject sItem)
+    public void Spawnitem(GameObject sItem)
     {
         // spawn item without the name Clone
 
@@ -57,10 +94,26 @@ public class ItemSpawn : MonoBehaviour
 
         spawnedItem.name = sItem.name;
 
+        remainingItems2.Add(spawnedItem);
+
         // put chosen item into recipe list
         gamemanager.Updatelist(spawnedItem);
 
 
+
+    }
+
+    public void ResetItems()
+    {
+        remainingSpawnLoc = new List<GameObject>(spawnLoc);
+        respawnlocList = new List<GameObject>(remainingSpawnLoc);
+        respawnitemList = new List<GameObject>(gamemanager.recipe);
+
+        gamemanager.ResetCollection();
+
+        Debug.Log("Resetting items");
+        ItemReSpawnLoc(respawnlocList, respawnitemList);
+        
 
     }
 }

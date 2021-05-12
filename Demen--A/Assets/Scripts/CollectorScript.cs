@@ -5,6 +5,7 @@ using UnityEngine;
 public class CollectorScript : MonoBehaviour
 {
     public GameManager gamemanager;
+    public ItemSpawn itemSpawnManager;
 
     public GameObject collected;
     public Transform collLocation;
@@ -12,6 +13,7 @@ public class CollectorScript : MonoBehaviour
     void Start()
     {
         gamemanager = GameObject.Find("GameController").GetComponent<GameManager>();
+        itemSpawnManager = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
         collLocation = GameObject.Find("Discard").transform;
     }
     // when collision is detected and the collider game object tag is Item
@@ -23,9 +25,10 @@ public class CollectorScript : MonoBehaviour
             collected = collision.gameObject;
 
             gamemanager.Collect(collected);
-
+            itemSpawnManager.remainingItems2.RemoveAll(x=>x == collected.gameObject);
             collected.gameObject.transform.position = collLocation.transform.position;
             collected.transform.parent = collLocation.transform;
+
         }
     }
 }

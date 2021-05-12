@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     public CharacterController ctrl;
+    public ItemSpawn itemspawn;
 
     public float moveSpeed = 12f;
     public float gravity = -9.8f;
@@ -15,6 +16,11 @@ public class PlayerMove : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+
+    private void Start()
+    {
+        itemspawn = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
+    }
 
     void Update()
     {
@@ -39,5 +45,12 @@ public class PlayerMove : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         // make player fall depending on gravity velocity
         ctrl.Move(velocity * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+
+            itemspawn.ResetItems();
+
+        }
     }
 }

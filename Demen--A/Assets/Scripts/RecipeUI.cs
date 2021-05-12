@@ -45,6 +45,7 @@ public class RecipeUI : MonoBehaviour
             // when R is pressed disable/enable recipe board game object
             // disable/enable player and recipe cams to either show
             // recipe board or the game world
+            gamemanager.cursorstate = !gamemanager.cursorstate;
             active = !active;
             recipeBoard.SetActive(active);
             playermove.enabled = !playermove.enabled;
