@@ -116,4 +116,16 @@ public class ItemSpawn : MonoBehaviour
         
 
     }
+
+    public void ConfuseActivate()
+    {
+
+        remainingSpawnLoc = new List<GameObject>(spawnLoc);
+        respawnlocList = new List<GameObject>(remainingSpawnLoc);
+        respawnitemList = new List<GameObject>(remainingItems2);
+
+        Debug.Log("Resetting items");
+        ItemReSpawnLoc(respawnlocList, respawnitemList);
+
+    }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public RecipeUI recipeUI;
+    public ItemSpawn itemSpawnM;
 
     public List<GameObject> collectedItems = new List<GameObject>();
     public List<GameObject> recipeList = new List<GameObject>();
@@ -15,17 +16,42 @@ public class GameManager : MonoBehaviour
 
     public bool cursorstate;
 
+    public float timeUntilConfusion;
+
     // Start is called before the first frame update
     void Start()
     {
         recipeUI = GameObject.Find("GameController").GetComponent<RecipeUI>();
+        itemSpawnM = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
 
         cursorstate = false;
+
+        RandomTimePicker();
     }
 
+    void RandomTimePicker()
+    {
+
+        timeUntilConfusion = UnityEngine.Random.Range(15, 180);
+        
+
+    }
     // Update is called once per frame
     void Update()
     {
+        if (timeUntilConfusion > 0)
+        {
+            timeUntilConfusion -= Time.deltaTime;
+        }
+
+        if (timeUntilConfusion <= 0)
+        {
+
+            RandomTimePicker();
+            itemSpawnM.ConfuseActivate();
+
+        }
+
         if (compare(recipe, items) == true)
         {
             Debug.Log("GameOver");
