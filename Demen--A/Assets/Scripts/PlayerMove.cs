@@ -48,7 +48,7 @@ public class PlayerMove : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-
+            // when button T is pressed reset items
             itemspawn.ResetItems();
 
         }

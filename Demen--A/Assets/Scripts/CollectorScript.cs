@@ -23,9 +23,11 @@ public class CollectorScript : MonoBehaviour
         if (collision.gameObject.tag == "Item")
         {
             collected = collision.gameObject;
-
+            // tell game manager script to store collected item
             gamemanager.Collect(collected);
+            // remove collected item from remaining item list
             itemSpawnManager.remainingItems2.RemoveAll(x=>x == collected.gameObject);
+            // change item position to be off screen so it can be re-used later
             collected.gameObject.transform.position = collLocation.transform.position;
             collected.transform.parent = collLocation.transform;
 
