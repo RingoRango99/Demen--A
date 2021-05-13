@@ -6,6 +6,7 @@ public class PlayerMove : MonoBehaviour
 {
     public CharacterController ctrl;
     public ItemSpawn itemspawn;
+    public UIManager uiManager;
 
     public float moveSpeed = 12f;
     public float gravity = -9.8f;
@@ -17,9 +18,13 @@ public class PlayerMove : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
+    bool isActive;
+
     private void Start()
     {
         itemspawn = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
+        uiManager = GameObject.Find("GameController").GetComponent<UIManager>();
+        isActive = false;
     }
 
     void Update()
@@ -51,6 +56,20 @@ public class PlayerMove : MonoBehaviour
             // when button T is pressed reset items
             itemspawn.ResetItems();
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isActive = !isActive;
+
+            if (isActive == true)
+            {
+                uiManager.PauseGame();
+            }
+            else if (isActive == false)
+            {
+                uiManager.UnPauseGame();
+            }
         }
     }
 }
