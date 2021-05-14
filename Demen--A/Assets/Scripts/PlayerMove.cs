@@ -8,7 +8,7 @@ public class PlayerMove : MonoBehaviour
     public ItemSpawn itemspawn;
     public UIManager uiManager;
 
-    public float moveSpeed = 9f;
+    public float moveSpeed = 7f;
     public float gravity = -9.8f;
 
     public Transform groundCheck;

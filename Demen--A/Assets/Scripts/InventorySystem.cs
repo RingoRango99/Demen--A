@@ -58,25 +58,18 @@ public class InventorySystem : MonoBehaviour
             DropItem();
         }
 
-        if (pickupItem != null && pickupItem.tag == "Item" )
-        {
-            uiManager.crosshair.color = Color.green;
-        }
-        else
-        {
-            uiManager.crosshair.color = Color.red;
-        }
-
         if (pickupItem != null && invItem == null && pickupItem.tag == "Item")
         {
             // if looked at item isnt null and inventory item is null
             // and looked at item tag is item activate mouse info
             uiManager.SetMouseInfo(pickupItem);
+            uiManager.crosshair.color = Color.green;
         }
         else
         {
             // else disable mouse info
             uiManager.DisableMouseInfo();
+            uiManager.crosshair.color = Color.red;
         }
     }
 

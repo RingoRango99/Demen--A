@@ -10,6 +10,7 @@ public class MouseInfo : MonoBehaviour
     public Canvas mouseInfo;
     public GameObject mouseInfoLoc;
     public TMP_Text mouseInfoText;
+    public Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class MouseInfo : MonoBehaviour
     {
         // transform main camera world location to screen canvas location to determine where
         // text should appear so it looks like it's on the object
-        Vector3 infoPos = Camera.main.WorldToScreenPoint(mouseInfoLoc.transform.position);
+        Vector3 infoPos = mainCamera.WorldToScreenPoint(mouseInfoLoc.transform.position);
         mouseInfoText.transform.position = infoPos;
     }
 }

@@ -164,7 +164,6 @@ public class GameManager : MonoBehaviour
         // locks cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Debug.Log("cursor locked");
 
     }
 
@@ -173,7 +172,6 @@ public class GameManager : MonoBehaviour
         // unlocks cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Debug.Log("cursor Unlocked");
 
     }
 
