@@ -8,7 +8,7 @@ public class PlayerMove : MonoBehaviour
     public ItemSpawn itemspawn;
     public UIManager uiManager;
 
-    public float moveSpeed = 12f;
+    public float moveSpeed = 9f;
     public float gravity = -9.8f;
 
     public Transform groundCheck;
@@ -61,7 +61,8 @@ public class PlayerMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isActive = !isActive;
-
+            // set the pause menu to active 
+            // or inactive
             if (isActive == true)
             {
                 uiManager.PauseGame();

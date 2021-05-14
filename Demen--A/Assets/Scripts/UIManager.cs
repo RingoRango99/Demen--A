@@ -102,7 +102,8 @@ public class UIManager : MonoBehaviour
     public IEnumerator BackToNormal()
     {
         yield return new WaitForSeconds(6);
-
+        // returns player back to normal and sets
+        // and sets blackout back so the screen is normal again
         StartCoroutine(GettingConfused(false));
 
     }

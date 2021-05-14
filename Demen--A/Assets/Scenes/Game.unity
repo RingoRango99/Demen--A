@@ -6119,7 +6119,7 @@ MonoBehaviour:
   ctrl: {fileID: 1777306878}
   itemspawn: {fileID: 0}
   uiManager: {fileID: 0}
-  moveSpeed: 12
+  moveSpeed: 7
   gravity: -9.8
   groundCheck: {fileID: 399941727}
   groundDistance: 0.4
