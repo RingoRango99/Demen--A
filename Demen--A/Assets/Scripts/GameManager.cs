@@ -41,8 +41,7 @@ public class GameManager : MonoBehaviour
     void RandomTimePicker()
     {
         // pick a random time between 15 seconds and 3 minutes
-        //timeUntilConfusion = UnityEngine.Random.Range(15, 180);
-        timeUntilConfusion = 10;
+        timeUntilConfusion = UnityEngine.Random.Range(15, 180);
 
 
 
