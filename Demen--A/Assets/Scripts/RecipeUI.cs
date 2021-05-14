@@ -18,6 +18,7 @@ public class RecipeUI : MonoBehaviour
     public bool active;
 
     public GameObject recipeBoard;
+    public GameObject playerUI;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class RecipeUI : MonoBehaviour
         gamemanager = GameObject.Find("GameController").GetComponent<GameManager>();
         playermove = GameObject.Find("Player").GetComponent<PlayerMove>();
         recipeBoard = GameObject.Find("RecipeBoard");
+        playerUI = GameObject.Find("PlayerUI");
 
         recipeBoard.SetActive(false);
         // start a co-routine to populate recipe board but wait for 2 seconds
@@ -51,6 +53,7 @@ public class RecipeUI : MonoBehaviour
             playermove.enabled = !playermove.enabled;
             playerCam.enabled = !playerCam.enabled;
             recipeCam.enabled = !recipeCam.enabled;
+            playerUI.SetActive(!active);
         }
 
         

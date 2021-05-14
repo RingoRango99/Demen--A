@@ -41,8 +41,10 @@ public class GameManager : MonoBehaviour
     void RandomTimePicker()
     {
         // pick a random time between 15 seconds and 3 minutes
-        timeUntilConfusion = UnityEngine.Random.Range(15, 180);
-        
+        //timeUntilConfusion = UnityEngine.Random.Range(15, 180);
+        timeUntilConfusion = 10;
+
+
 
     }
 
@@ -62,6 +64,10 @@ public class GameManager : MonoBehaviour
             // reset timer
             RandomTimePicker();
             itemSpawnM.ConfuseActivate();
+            uiManager.confused = true;
+            uiManager.blackoutImage.SetActive(true);
+            uiManager.Confused();
+
 
         }
         // if cursor state is changed

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InventorySystem : MonoBehaviour
 {
@@ -11,7 +12,11 @@ public class InventorySystem : MonoBehaviour
     public GameObject pickupItem;
     public GameObject invItem;
 
-    public float maxReach = 2f;
+    public TMP_Text dropInfo;
+
+    public float maxReach = 3f;
+
+    public UIManager uiManager;
 
 
 
@@ -22,6 +27,11 @@ public class InventorySystem : MonoBehaviour
         itemDestination = GameObject.Find("ItemHolder");
         dropLocation = GameObject.Find("DropLocation");
         targetC = GameObject.Find("Main Camera").transform;
+
+        dropInfo.enabled = false;
+
+        uiManager = GameObject.Find("GameController").GetComponent<UIManager>();
+
     }
 
     // Update is called once per frame
@@ -31,14 +41,13 @@ public class InventorySystem : MonoBehaviour
         // run the looking raycast
         LookCast();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && invItem == null && pickupItem.tag == "Item")
+        if (Input.GetKeyDown(KeyCode.Mouse0) && invItem == null && pickupItem != null && pickupItem.tag == "Item")
         {
             // if lmb is pressed and player is holding nothing and the looked at item has a tag of "Item"
             // run pick up script
-            if (pickupItem != null)
-            {
+
                 PickupItem();
-            }
+            
             
 
         }
@@ -47,6 +56,27 @@ public class InventorySystem : MonoBehaviour
         {
             // if rmb is pressed drop any item held
             DropItem();
+        }
+
+        if (pickupItem != null && pickupItem.tag == "Item" )
+        {
+            uiManager.crosshair.color = Color.green;
+        }
+        else
+        {
+            uiManager.crosshair.color = Color.red;
+        }
+
+        if (pickupItem != null && invItem == null && pickupItem.tag == "Item")
+        {
+            // if looked at item isnt null and inventory item is null
+            // and looked at item tag is item activate mouse info
+            uiManager.SetMouseInfo(pickupItem);
+        }
+        else
+        {
+            // else disable mouse info
+            uiManager.DisableMouseInfo();
         }
     }
 
@@ -69,12 +99,14 @@ public class InventorySystem : MonoBehaviour
             // put the raycast hit item into variable
             pickupItem = hit.transform.gameObject;
 
+            
+
         }
         else
         {
             // if nothing is hit run reset item script
             ResetItem();
-
+            
         }
 
     }
@@ -92,6 +124,7 @@ public class InventorySystem : MonoBehaviour
         invItem.transform.parent = itemDestination.transform;
         invItem.transform.LookAt(targetC);
 
+        dropInfo.enabled = true;
         
 
     }
@@ -109,12 +142,14 @@ public class InventorySystem : MonoBehaviour
         // set held item variable to nothing
         invItem = null;
 
+        dropInfo.enabled = false;
     }
 
     void ResetItem()
     {
         // set looking at item to nothing
         pickupItem = null;
+        
 
     }
 }

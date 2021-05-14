@@ -8,10 +8,20 @@ public class UIManager : MonoBehaviour
 {
     public GameObject gameOverScreen;
     public GameObject pauseMenuScreen;
+    public GameObject playerUI;
+    public GameObject blackoutImage;
 
     public GameManager gamemanager;
+    public MouseInfo mouseInfo;
 
     public TMP_Text timerText;
+    public TMP_Text blackoutText;
+
+    public Image crosshair;
+
+    public bool confused;
+
+    public Material matToChange;
 
     // Start is called before the first frame update
     void Start()
@@ -19,11 +29,83 @@ public class UIManager : MonoBehaviour
         gameOverScreen = GameObject.Find("GameOver");
         pauseMenuScreen = GameObject.Find("PauseMenu");
         gamemanager = GameObject.Find("GameController").GetComponent<GameManager>();
+        playerUI = GameObject.Find("PlayerUI");
+        mouseInfo = GameObject.Find("GameController").GetComponent<MouseInfo>();
+
+        StartCoroutine(GettingConfused(false));
+
         gameOverScreen.SetActive(false);
         pauseMenuScreen.SetActive(false);
         Time.timeScale = 1;
+
+        playerUI.SetActive(true);
+        confused = false;
     }
 
+    public IEnumerator GettingConfused(bool fadeToBlack = true, int fadeSpeed = 3)
+    {
+        // takes color from blackout image
+        Color imageColor = blackoutImage.GetComponent<Image>().color;
+        // variable for fade ammount
+        float fadeAmount;
+
+
+        if (fadeToBlack)
+        {
+            blackoutText.enabled = true;
+            // if fade to black is true and while blackout image color a is less than 1
+            while (blackoutImage.GetComponent<Image>().color.a < 1)
+            {
+                // set fade ammount by colour a ammount and fadespeed 
+                fadeAmount = imageColor.a + (fadeSpeed * Time.deltaTime);
+                // set image color as new color by fade ammount
+                imageColor = new Color(imageColor.r, imageColor.g, imageColor.b, fadeAmount);
+                // set blackout image colour to it's new faded color
+                blackoutImage.GetComponent<Image>().color = imageColor;
+                yield return null;
+            }
+
+        }
+        else
+        {
+            blackoutText.enabled = false;
+
+            while (blackoutImage.GetComponent<Image>().color.a > 0)
+            {
+                // samme as previous while but reveresed to undo the black out
+                fadeAmount = imageColor.a - (fadeSpeed * Time.deltaTime);
+                imageColor = new Color(imageColor.r, imageColor.g, imageColor.b, fadeAmount);
+                blackoutImage.GetComponent<Image>().color = imageColor;
+                yield return null;
+            }
+        }
+        yield return new WaitForEndOfFrame();
+
+    }
+
+    public void Confused()
+    {
+        // change item materials when confuse is activated
+        for (int i = 0; i < gamemanager.recipe.Length; i++)
+        {
+            gamemanager.recipe[i].GetComponent<MeshRenderer>().material = matToChange;
+        }
+
+        StartCoroutine(GettingConfused());
+
+        StartCoroutine(BackToNormal());
+
+        
+
+    }
+
+    public IEnumerator BackToNormal()
+    {
+        yield return new WaitForSeconds(6);
+
+        StartCoroutine(GettingConfused(false));
+
+    }
 
     public void GameOver()
     {
@@ -32,6 +114,7 @@ public class UIManager : MonoBehaviour
         gamemanager.UnlockCursor();
         Time.timeScale = 0;
         gameOverScreen.SetActive(true);
+        playerUI.SetActive(false);
 
     }
 
@@ -41,6 +124,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0;
         pauseMenuScreen.SetActive(true);
         gamemanager.UnlockCursor();
+        playerUI.SetActive(false);
 
     }
 
@@ -50,5 +134,30 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
         pauseMenuScreen.SetActive(false);
         gamemanager.LockCursor();
+        playerUI.SetActive(true);
+    }
+
+    public void SetMouseInfo(GameObject item)
+    {
+
+        mouseInfo.mouseInfoLoc.transform.position = item.transform.position;
+        if (confused == false)
+        {
+            mouseInfo.mouseInfoText.text = "Press left click to pick up " + item.name;
+        }
+        else
+        {
+            mouseInfo.mouseInfoText.text = "Press left click to pick up ingredient";
+        }
+        
+        mouseInfo.mouseInfo.enabled = true;
+
+    }
+
+    public void DisableMouseInfo()
+    {
+
+        mouseInfo.mouseInfo.enabled = false;
+
     }
 }
