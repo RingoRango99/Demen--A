@@ -10,11 +10,15 @@ public class CollectorScript : MonoBehaviour
     public GameObject collected;
     public Transform collLocation;
 
+    public AudioClip sound;
+
     void Start()
     {
         gamemanager = GameObject.Find("GameController").GetComponent<GameManager>();
         itemSpawnManager = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
         collLocation = GameObject.Find("Discard").transform;
+        GetComponent<AudioSource>().playOnAwake = false;
+        GetComponent<AudioSource>().clip = sound;
     }
     // when collision is detected and the collider game object tag is Item
     // Add item to a list of "UsedItems" array and destroy item
@@ -22,6 +26,7 @@ public class CollectorScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Item")
         {
+            GetComponent<AudioSource>().Play();
             collected = collision.gameObject;
             // tell game manager script to store collected item
             gamemanager.Collect(collected);

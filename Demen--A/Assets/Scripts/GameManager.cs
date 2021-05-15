@@ -16,15 +16,20 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] recipe;
     public GameObject[] items;
+    public GameObject timer;
 
     public TMP_Text timerText;
     public float secondsC;
     public int minutesC;
     public int hoursC;
+    int interval;
+    float playTime;
 
     public bool cursorstate;
 
     public float timeUntilConfusion;
+
+    public AudioClip clockTick;
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +41,14 @@ public class GameManager : MonoBehaviour
         cursorstate = false;
 
         RandomTimePicker();
+        timer.GetComponent<AudioSource>().playOnAwake = false;
+        timer.GetComponent<AudioSource>().clip = clockTick;
     }
 
     void RandomTimePicker()
     {
-        // pick a random time between 15 seconds and 3 minutes
-        timeUntilConfusion = UnityEngine.Random.Range(15, 180);
+        // pick a random time between 15 seconds and 1 minute
+        timeUntilConfusion = UnityEngine.Random.Range(15, 60);
 
 
 
@@ -88,7 +95,18 @@ public class GameManager : MonoBehaviour
     {
         // timer counting up to indicate time spent in game
         // with time being formatted to look like a clock
+
         secondsC += Time.deltaTime;
+        interval = 1;
+        playTime += Time.deltaTime;
+        // plays audio clip at an interval of 1 second to match
+        // the clock second counter
+        if (playTime >= interval)
+        {
+            timer.GetComponent<AudioSource>().PlayOneShot(clockTick);
+            playTime = 0.0f;
+        }
+
         timerText.text = hoursC + "h:" + minutesC + "m:" + (int)secondsC + "s";
         uiManager.timerText.text = "Time: " + hoursC + "h:" + minutesC + "m:" + (int)secondsC + "s";
         if (secondsC >= 60)

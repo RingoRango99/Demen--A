@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenuScreen;
     public GameObject playerUI;
     public GameObject blackoutImage;
+    public GameObject player;
 
     public GameManager gamemanager;
     public MouseInfo mouseInfo;
@@ -22,6 +23,8 @@ public class UIManager : MonoBehaviour
     public bool confused;
 
     public Material matToChange;
+
+    public AudioClip heavyBreathing;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +43,9 @@ public class UIManager : MonoBehaviour
 
         playerUI.SetActive(true);
         confused = false;
+
+        player.GetComponent<AudioSource>().playOnAwake = false;
+        player.GetComponent<AudioSource>().clip = heavyBreathing;
     }
 
     public IEnumerator GettingConfused(bool fadeToBlack = true, int fadeSpeed = 3)
@@ -52,10 +58,14 @@ public class UIManager : MonoBehaviour
 
         if (fadeToBlack)
         {
+            //play audio clip
+            player.GetComponent<AudioSource>().PlayOneShot(heavyBreathing);
+
             blackoutText.enabled = true;
             // if fade to black is true and while blackout image color a is less than 1
             while (blackoutImage.GetComponent<Image>().color.a < 1)
             {
+                
                 // set fade ammount by colour a ammount and fadespeed 
                 fadeAmount = imageColor.a + (fadeSpeed * Time.deltaTime);
                 // set image color as new color by fade ammount
