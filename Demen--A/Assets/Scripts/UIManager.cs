@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
 
     public AudioClip heavyBreathing;
 
+    public ItemSpawn itemSpawnManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +48,8 @@ public class UIManager : MonoBehaviour
 
         player.GetComponent<AudioSource>().playOnAwake = false;
         player.GetComponent<AudioSource>().clip = heavyBreathing;
+
+        itemSpawnManager = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
     }
 
     public IEnumerator GettingConfused(bool fadeToBlack = true, int fadeSpeed = 3)
@@ -80,6 +84,8 @@ public class UIManager : MonoBehaviour
         {
             blackoutText.enabled = false;
 
+            
+
             while (blackoutImage.GetComponent<Image>().color.a > 0)
             {
                 // samme as previous while but reveresed to undo the black out
@@ -88,6 +94,8 @@ public class UIManager : MonoBehaviour
                 blackoutImage.GetComponent<Image>().color = imageColor;
                 yield return null;
             }
+
+            
         }
         yield return new WaitForEndOfFrame();
 

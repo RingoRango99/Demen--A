@@ -16,6 +16,7 @@ public class ItemSpawn : MonoBehaviour
     public GameManager gamemanager;
 
     public List<GameObject> remainingSpawnLoc;
+    public List<GameObject> remainingSpawnLoc2;
     public List<GameObject> remainingItems;
     public List<GameObject> remainingItems2;
 
@@ -34,6 +35,8 @@ public class ItemSpawn : MonoBehaviour
         // makes new list containing all game objects within the arrays
         remainingSpawnLoc = new List<GameObject>(spawnLoc);
         remainingItems = new List<GameObject>(items);
+
+        remainingSpawnLoc2 = new List<GameObject>(spawnLoc);
         // spawn initial set of items
         ItemSpawnLoc(remainingSpawnLoc, remainingItems);
        
@@ -66,9 +69,9 @@ public class ItemSpawn : MonoBehaviour
 
     public void ItemReSpawnLoc(List<GameObject> spawnList, List<GameObject> itemList)
     {
-
+        remainingItems2.Clear();
         // creates a loop that goes through the length of the spawn point array
-        for (int i = 0; i < spawnLoc.Length; i++)
+        for (int i = 0; i < remainingSpawnLoc2.Count; i++)
         {
             // chooses random number for spawn location and item
             spawn = Random.Range(0, spawnList.Count);
@@ -78,6 +81,7 @@ public class ItemSpawn : MonoBehaviour
             spawnItem = itemList[item];
             // sets item spawn to the position of the currently chosen remainingspawnloc list
             spawnItem.transform.position = spawnList[spawn].transform.position;
+            remainingItems2.Add(spawnItem);
             // remove just used item and spawn point from list
             // so it doesn't get used again
             spawnList.RemoveAt(spawn);
@@ -108,24 +112,26 @@ public class ItemSpawn : MonoBehaviour
     public void ResetItems()
     {
         // populates lists with objects which will be used for item respawns
-        remainingSpawnLoc = new List<GameObject>(spawnLoc);
-        respawnlocList = new List<GameObject>(remainingSpawnLoc);
+        remainingItems2.Clear();
+        remainingSpawnLoc2 = new List<GameObject>(spawnLoc);
+        respawnlocList = new List<GameObject>(spawnLoc);
         respawnitemList = new List<GameObject>(gamemanager.recipe);
 
         gamemanager.ResetCollection();
+        
 
         Debug.Log("Resetting items");
         // initiate item respawn
         ItemReSpawnLoc(respawnlocList, respawnitemList);
-        
+
+
 
     }
 
     public void ConfuseActivate()
     {
         // populates lists with objects which will be used for item respawns
-        remainingSpawnLoc = new List<GameObject>(spawnLoc);
-        respawnlocList = new List<GameObject>(remainingSpawnLoc);
+        respawnlocList = new List<GameObject>(remainingSpawnLoc2);
         respawnitemList = new List<GameObject>(remainingItems2);
 
         Debug.Log("Resetting items");

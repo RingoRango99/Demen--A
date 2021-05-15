@@ -20,12 +20,16 @@ public class RecipeUI : MonoBehaviour
     public GameObject recipeBoard;
     public GameObject playerUI;
 
+    public ItemSpawn itemSpawnManager;
+
     // Start is called before the first frame update
     void Start()
     {
         playerCam.enabled = true;
         recipeCam.enabled = false;
 
+        
+        itemSpawnManager = GameObject.Find("RandomSpawnHandler").GetComponent<ItemSpawn>();
 
         gamemanager = GameObject.Find("GameController").GetComponent<GameManager>();
         playermove = GameObject.Find("Player").GetComponent<PlayerMove>();
